@@ -14,24 +14,25 @@ public class User {
     }
 
     public void setEmail(String email) {
+        email = email.trim();
         if (emailIsValid(email)) {
             this.email = email;
         } else {
-            System.out.println(email + " is not valid.");
+            System.out.println(email + " is not valid");
         }
 
     }
-    // Проверка email !!
-    // email @  - exist and only one,  ==> done.
-    //  '.' - min one dot after @ ==> done
-    // min two symbols after last dot ==> done
-    // alphabetic, digits, '@', '.', ' _ ', '-'. ==> done
 
+    /*
+    1) '@' - exist and only one -> Done
+    2) '.' - min one dot after @ -> Done
+    3) min two symbols after last dot -> Done
+    4) alphabetic, digits, '@', '.', '_', '-' -> Done
+     */
     private boolean emailIsValid(String email) {
         int at = email.indexOf('@');
-        if (at == -1 || (email.lastIndexOf('@') != at)) {
+        if (at == -1 || email.lastIndexOf('@') != at) {
             return false;
-
         }
         if (email.indexOf('.', at + 1) == -1) {
             return false;
@@ -44,61 +45,60 @@ public class User {
             if (!(Character.isDigit(c) || Character.isAlphabetic(c) || c == '@' || c == '.' || c == '_' || c == '-')) {
                 return false;
             }
-
         }
-
         return true;
-
     }
-
 
     public String getPassword() {
         return password;
     }
 
+    /*
+    TODO Homework
+    1) Min 8 symbols
+    2) Min one symbol in uppercase
+    3) Min one symbol in lowercase
+    4) Min one symbol is digit
+    5) Min one symbol is a special symbol (!%@*&)
+     */
     public void setPassword(String password) {
+        if (passwordIsValid(password)) {
+            this.password = password;
+        } else {
+            System.out.println("password is not valid");
+        }
+    }
 
-        this.password = password;
+    private boolean passwordIsValid(String password) {
+        boolean[] res = new boolean[5];
+        if (password.length() >= 8) {
+            res[0] = true;
+        }
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            if (Character.isUpperCase(c)) {
+                res[1] = true;
+            }
+            if (Character.isLowerCase(c)) {
+                res[2] = true;
+            }
+            if (Character.isDigit(c)) {
+                res[3] = true;
+            }
+
+            if ("!%@*&".indexOf(c) >= 0) {
+                res[4] = true;
+            }
+        }
+        return res[0] && res[1] && res[2] && res[3] && res[4];
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("email='").append(email).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
-
-    /* TODO HomeWork
-    1. Min 8 Symbols
-    2. min one Symbol in UpperCase
-    3. min one Symbol in LowerCase
-    4.Min one symbol is Digit
-    5.Min one Symbol is a special symbol (!%@*&)
-    =================================================================================================================
- */
-    private boolean passwordIsValid(String password) {
-        if (password.length() >= 7) {
-            return true;
-        }
-        for (int i = 0; i < password.length(); i++) {
-            char ch = password.charAt(i);
-            if (Character.isUpperCase(ch) && Character.isLowerCase(ch)) {
-                return true;
-            }
-            for (int j = 0; j < password.length(); j++) {
-                char ch1 = password.charAt(j);
-                if (Character.isDigit(ch1)) ;
-                return true;
-            }
-            for (int k = 0; k < password.length(); k++) {
-                char s = password.charAt(k);
-                if (k == '!' || k == '%' || k == '@' || k == '*' || k == '&') {
-                    return true;
-                }
-
-            }
-        }
-        return false;
-    }
-    }
+}
