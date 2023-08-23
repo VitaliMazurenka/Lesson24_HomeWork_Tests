@@ -9,20 +9,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserTest {
     private User user;
     private String email = "john@gmail.com";
-    private String password = "1234";
+    private String password = "12345Ab!";
 
     @BeforeEach
-        // запускается перед каждым тестом
     void setUp() {
         user = new User(email, password);
     }
 
     @Test
     void testValidEmail() {
-        String validEmail = "john@gmx.de";
+        String validEmail = "  john@gmx.de  ";
         user.setEmail(validEmail);
-        validEmail.equals(user.getEmail());
-        assertEquals(validEmail, user.getEmail());  // внутри делает проверку через equals
+        assertEquals(validEmail.trim(), user.getEmail());
     }
 
     @Test
@@ -33,7 +31,7 @@ class UserTest {
     }
 
     @Test
-    void testEmailDoubletAt() {
+    void testEmailDoubleAt() {
         String invalidEmail = "jo@hn@gmx.de";
         user.setEmail(invalidEmail);
         assertEquals(email, user.getEmail());
@@ -62,37 +60,45 @@ class UserTest {
         user.setEmail(invalidEmail);
         assertEquals(email, user.getEmail());
     }
-    //====================================================HOMEWORK==================================================
+
     @Test
     void testValidPassword() {
-        String validPassword = "The_beatle82%";
+        String validPassword = "qwertY1@";
         user.setPassword(validPassword);
-        validPassword.equals(user.getPassword());
         assertEquals(validPassword, user.getPassword());
+    }
 
-    }
     @Test
-    void testNumberOfSymbols() {
-        String invalidPassword = "The_bea";
+    void testPasswordLength() {
+        String invalidPassword = "wertY1@";
         user.setPassword(invalidPassword);
         assertEquals(password, user.getPassword());
     }
-    @Test
-    void testUpperAndLowerCase() {
-        String invalidPassword = "the_beatle82%";
-        user.setPassword(invalidPassword);
-        assertEquals(password, user.getPassword());
-    }
-    @Test
-    void testIfDigit() {
-        String invalidPassword = "the_beatle%";
-        user.setPassword(invalidPassword);
-        assertEquals(password, user.getPassword());
 
-    }
     @Test
-    void testIfSpecialSymbol() {
-        String invalidPassword = "the_beatle82";
+    void testPasswordUpperCase() {
+        String invalidPassword = "qwerty1@";
+        user.setPassword(invalidPassword);
+        assertEquals(password, user.getPassword());
+    }
+
+    @Test
+    void testPasswordLowerCase() {
+        String invalidPassword = "QWERTY1@";
+        user.setPassword(invalidPassword);
+        assertEquals(password, user.getPassword());
+    }
+
+    @Test
+    void testPasswordDigits() {
+        String invalidPassword = "qwertYz@";
+        user.setPassword(invalidPassword);
+        assertEquals(password, user.getPassword());
+    }
+
+    @Test
+    void testPasswordSpecialSymbols() {
+        String invalidPassword = "qwertY12";
         user.setPassword(invalidPassword);
         assertEquals(password, user.getPassword());
     }
